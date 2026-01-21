@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FocusBreak - Mola Sayacı</title>
+    <style>
+        :root {
+            --primary: #FF6B35;
+            --dark: #1A1A1B;
+            --light: #FFFFFF;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--dark);
+            color: var(--light);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+        .container {
+            text-align: center;
+            padding: 20px;
+            width: 90%;
+            max-width: 400px;
+        }
+        h1 {
+            color: var(--primary);
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+        .timer-display {
+            font-size: 5rem;
+            font-weight: bold;
+            margin: 20px 0;
+            text-shadow: 0 0 20px rgba(255, 107, 53, 0.3);
+        }
+        .buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+        button {
+            padding: 12px 25px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: 0.3s;
+            font-weight: bold;
+        }
+        .btn-work { background-color: var(--primary); color: white; }
+        .btn-break { background-color: #4E5D6C; color: white; }
+        .btn-stop { background-color: #E74C3C; color: white; }
+        button:active { transform: scale(0.95); }
+        .quote-container {
+            margin-top: 30px;
+            font-style: italic;
+            color: #AAAAAA;
+            min-height: 50px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>FocusBreak</h1>
+        <div class="timer-display" id="display">25:00</div>
+        
+        <div class="buttons">
+            <button class="btn-work" onclick="startTimer(25)">Ders</button>
+            <button class="btn-break" onclick="startTimer(5)">Mola</button>
+            <button class="btn-stop" onclick="resetTimer()">Dur</button>
+        </div>
+
+        <div class="quote-container">
+            <p id="quote">"Başlamak için mükemmel olmana gerek yok, ama mükemmel olmak için başlamana gerek var."</p>
+        </div>
+    </div>
+
+    <script>
+        let countdown;
+        let timeLeft;
+        const display = document.getElementById('display');
+        const quoteDisplay = document.getElementById('quote');
+
+        const quotes = [
+            "Bugünün emeği, yarının zenginliğidir.",
+            "Odaklan, başaracaksın!",
+            "Küçük adımlar büyük sonuçlar doğurur.",
+            "Zihnini dinlendir, hedefine odaklan."
+        ];
+
+        function startTimer(minutes) {
+            clearInterval(countdown);
+            timeLeft = minutes * 60;
+            updateDisplay();
+            
+            countdown = setInterval(() => {
+                timeLeft--;
+                updateDisplay();
+                if (timeLeft <= 0) {
+                    clearInterval(countdown);
+                    alert("Süre bitti! Harika iş çıkardın.");
+                    changeQuote();
+                }
+            }, 1000);
+        }
+
+        function resetTimer() {
+            clearInterval(countdown);
+            display.textContent = "25:00";
+        }
+
+        function updateDisplay() {
+            const mins = Math.floor(timeLeft / 60);
+            const secs = timeLeft % 60;
+            display.textContent = `${mins < 10 ? '0' : ''}${mins}:${secs < 10 ? '0' : ''}${secs}`;
+        }
+
+        function changeQuote() {
+            const rand = Math.floor(Math.random() * quotes.length);
+            quoteDisplay.textContent = `"${quotes[rand]}"`;
+        }
+    </script>
+</body>
+</html>
